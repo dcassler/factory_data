@@ -29,16 +29,45 @@ def given_factory_id():
     rv = cur.fetchall()
     return str(rv)
 
-@app.route('/given_sprocket_id', methods=['GET'])
+@app.route('/given_sprocket_id')
 def given_sprocket_id():
-    return 0
+    cur = mysql.connection.cursor()
+    sprocket_id = request.args.get("sprocket_id")
+    print(sprocket_id)
+    sql_statement = "SELECT * FROM sprocket_data WHERE sprocket_id = "+ sprocket_id
+    cur.execute(sql_statement)
+    mysql.connection.commit()
+    rv = cur.fetchall()
+    return str(rv)
 
 
 @app.route('/create_new_sprocket', methods=['POST'])
 def create_new_sprocket():
-    return 0
+    content_type = request.headers.get('Content-Type')
+    if (content_type == 'application/json'):
+        json = request.get_json()
+        print(json) 
+    else:
+        return 'Content-Type not supported!'
+    cur = mysql.connection.cursor()
+    sql_statement = "INSERT INTO db.sprocket_data (sprocket_id, teeth, pitch_diameter, outside_diameter, pitch) VALUES({0},{1},{2},{3},{4});".format(json["sprocket_id"], json["teeth"], json["pitch_diameter"], json["outside_diameter"], json["pitch"])
+    cur.execute(sql_statement)
+    mysql.connection.commit()
+    cur.close()
+    return f"Done!!"
 
 
 @app.route('/update_sprocket', methods=['PUT'])
 def update_sprocket():
-    return 0
+    content_type = request.headers.get('Content-Type')
+    if (content_type == 'application/json'):
+        json = request.get_json()
+        print(json) 
+    else:
+        return 'Content-Type not supported!'
+    cur = mysql.connection.cursor()
+    sql_statement = "UPDATE db.sprocket_data SET teeth={0}, pitch_diameter={1}, outside_diameter={2}, pitch={3} WHERE sprocket_id={4};".format(json["teeth"], json["pitch_diameter"], json["outside_diameter"], json["pitch"], json["sprocket_id"])
+    cur.execute(sql_statement)
+    mysql.connection.commit()
+    cur.close()
+    return f"Done!!"
