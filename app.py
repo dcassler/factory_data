@@ -3,7 +3,7 @@ from flask_mysqldb import MySQL
 app = Flask(__name__)
 
 
-app.config['MYSQL_HOST'] = '127.0.0.1'
+app.config['MYSQL_HOST'] = 'db'
 app.config['MYSQL_USER'] = 'user'
 app.config['MYSQL_PASSWORD'] = 'password'
 app.config['MYSQL_DB'] = 'db'
@@ -56,7 +56,6 @@ def create_new_sprocket():
     cur.close()
     return f"Done!!"
 
-
 @app.route('/update_sprocket', methods=['PUT'])
 def update_sprocket():
     content_type = request.headers.get('Content-Type')
@@ -71,3 +70,7 @@ def update_sprocket():
     mysql.connection.commit()
     cur.close()
     return f"Done!!"
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=3000, debug=True)
