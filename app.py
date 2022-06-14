@@ -54,7 +54,7 @@ def create_new_sprocket():
     cur.execute(sql_statement)
     mysql.connection.commit()
     cur.close()
-    return f"Done!!"
+    return f"Done"
 
 @app.route('/update_sprocket', methods=['PUT'])
 def update_sprocket():
@@ -69,7 +69,7 @@ def update_sprocket():
     cur.execute(sql_statement)
     mysql.connection.commit()
     cur.close()
-    return f"Done!!"
+    return f"Done"
 
 
 if __name__ == '__main__':
